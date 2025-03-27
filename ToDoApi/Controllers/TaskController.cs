@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using ToDoApi.Models;
 
 namespace ToDoApi.Controllers;
 
@@ -6,29 +7,60 @@ namespace ToDoApi.Controllers;
 [Route("tasks")]
 public class TaskController : ControllerBase
 {
+  private static readonly List<TaskDto> Tasks = [];
+
+  // GET /tasks → Devuelve todas las tareas.
   [HttpGet]
   public IActionResult GetAll()
   {
-    return Ok(new { Message = "Read All Tasks." });
+    return Ok(Tasks);
   }
 
-  public IActionResult GetById(int id)
+  // GET /tasks/{id} → Devuelve una tarea específica por su ID.
+  [HttpGet("{id}")]
+  public IActionResult GetById([FromRoute] string id)
   {
     return Ok(new { Message = "Read By Id" });
   }
 
+  // POST /tasks → Agrega una nueva tarea (con título, descripcion y estado: “Pendiente” o “Completada”).
   [HttpPost]
-  public IActionResult Post([FromBody] string value)
+  public IActionResult Create([FromBody] CreateTaskDto value)
   {
-    return Ok(new { message = "created" });
+    if (!ModelState.IsValid)
+    {
+      return BadRequest(ModelState);
+    }
+
+    if (string.IsNullOrWhiteSpace(value.Title))
+    {
+      return BadRequest(new { message = "El título es obligatorio." });
+    }
+
+    if (string.IsNullOrWhiteSpace(value.Status) || (value.Status != "Pendiente" && value.Status != "Completada"))
+    {
+      return BadRequest(new { message = "El estado debe ser 'Pendiente' o 'Completada'." });
+    }
+
+    var newTask = new TaskDto
+    {
+      Title = value.Title,
+      Description = value.Description,
+      Status = value.Status,
+    };
+
+    Tasks.Add(newTask);
+    return CreatedAtAction(nameof(GetById), new { id = newTask.Id }, newTask);
   }
 
+  // PUT /tasks/{id} → Modifica una tarea existente.
   [HttpPut("{id}")]
-  public IActionResult Put([FromRoute] string id, [FromBody] string value)
+  public IActionResult Update([FromRoute] string id, [FromBody] string value)
   {
     return Ok(new { message = "updated" });
   }
 
+  // DELETE /tasks/{id} → Elimina una tarea.
   [HttpDelete("{id}")]
   public IActionResult Delete([FromRoute] string id)
   {
