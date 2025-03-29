@@ -17,12 +17,13 @@ namespace ToDoApi.Controllers
             return Ok(Tasks);
         }
 
-  // GET /tasks/{id} → Devuelve una tarea específica por su ID.
-  [HttpGet("{id}")]
-  public IActionResult GetById([FromRoute] string id)
-  {
-    return Ok(new { Message = "Read By Id" });
-  }
+        // GET /tasks/{id} → Devuelve una tarea específica por su ID. (TU PARTE)
+        [HttpGet("{id}")]
+        public IActionResult GetById([FromRoute] int id)
+        {
+            var task = Tasks.FirstOrDefault(t => t.Id == id);
+            return task != null ? Ok(task) : NotFound();
+        }
 
   // POST /tasks → Agrega una nueva tarea (con título, descripcion y estado: “Pendiente” o “Completada”).
   [HttpPost]
