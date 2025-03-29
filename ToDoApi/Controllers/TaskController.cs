@@ -25,14 +25,14 @@ namespace ToDoApi.Controllers
             return task != null ? Ok(task) : NotFound();
         }
 
-  // POST /tasks → Agrega una nueva tarea (con título, descripcion y estado: “Pendiente” o “Completada”).
-  [HttpPost]
-  public IActionResult Create([FromBody] CreateTaskDto value)
-  {
-    if (!ModelState.IsValid)
-    {
-      return BadRequest(ModelState);
-    }
+        // POST /tasks → Agrega una nueva tarea (TU COMPAÑERO)
+        [HttpPost]
+        public IActionResult Create([FromBody] CreateTaskDto value)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
 
     if (string.IsNullOrWhiteSpace(value.Title))
     {
