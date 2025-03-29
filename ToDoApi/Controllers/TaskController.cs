@@ -61,10 +61,58 @@ namespace ToDoApi.Controllers
                 return NotFound();
             }
 
-  // DELETE /tasks/{id} → Elimina una tarea.
-  [HttpDelete("{id}")]
-  public IActionResult Delete([FromRoute] string id)
-  {
-    return Ok(new { message = "Deleted" });
-  }
+            existingTask.Title = updatedTask.Title;
+            existingTask.Description = updatedTask.Description;
+            existingTask.Status = updatedTask.Status;
+
+            return Ok(existingTask);
+        }
+
+        // DELETE /tasks/{id} → Elimina una tarea. (OTRO COMPAÑERO)
+        [HttpDelete("{id}")]
+        public IActionResult Delete([FromRoute] int id)
+        {
+            var task = Tasks.FirstOrDefault(t => t.Id == id);
+            if (task == null)
+            {
+                return NotFound();
+            }
+
+            Tasks.Remove(task);
+            return NoContent();
+        }
+    }
+
+    // Modelos DTO (deben estar en archivos separados, pero los muestro aquí como referencia)
+    public class TaskDto
+    {
+        public int Id { get; set; }
+        public required string Title { get; set; }
+        public string? Description { get; set; }
+        
+        [RegularExpression("^(Pendiente|Completada)$", ErrorMessage = "Estado inválido")]
+        public required string Status { get; set; }
+    }
+
+    public class CreateTaskDto
+    {
+        [Required(ErrorMessage = "El título es obligatorio")]
+        public required string Title { get; set; }
+        public string? Description { get; set; }
+        
+        [Required(ErrorMessage = "El estado es obligatorio")]
+        [RegularExpression("^(Pendiente|Completada)$", ErrorMessage = "Estado inválido")]
+        public required string Status { get; set; }
+    }
+
+    public class UpdateTaskDto
+    {
+        [Required(ErrorMessage = "El título es obligatorio")]
+        public required string Title { get; set; }
+        public string? Description { get; set; }
+        
+        [Required(ErrorMessage = "El estado es obligatorio")]
+        [RegularExpression("^(Pendiente|Completada)$", ErrorMessage = "Estado inválido")]
+        public required string Status { get; set; }
+    }
 }
