@@ -9,12 +9,12 @@ public class TaskController : ControllerBase
 {
   private static readonly List<TaskDto> Tasks = [];
 
-  // GET /tasks → Devuelve todas las tareas.
-  [HttpGet]
-  public IActionResult GetAll()
-  {
-    return Ok(Tasks);
-  }
+        // GET /tasks → Devuelve todas las tareas.
+        [HttpGet]
+        public IActionResult GetAll()
+        {
+            return Ok(Tasks);
+        }
 
   // GET /tasks/{id} → Devuelve una tarea específica por su ID.
   [HttpGet("{id}")]
