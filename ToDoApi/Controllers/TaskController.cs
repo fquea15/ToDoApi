@@ -1,13 +1,14 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ToDoApi.Models;
 
-namespace ToDoApi.Controllers;
-
-[ApiController]
-[Route("tasks")]
-public class TaskController : ControllerBase
+namespace ToDoApi.Controllers
 {
-  private static readonly List<TaskDto> Tasks = [];
+    [ApiController]
+    [Route("tasks")]
+    public class TaskController : ControllerBase
+    {
+        private static readonly List<TaskDto> Tasks = [];
+        private static int nextId = 1;
 
         // GET /tasks → Devuelve todas las tareas.
         [HttpGet]
