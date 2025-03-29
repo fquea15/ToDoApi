@@ -34,22 +34,13 @@ namespace ToDoApi.Controllers
                 return BadRequest(ModelState);
             }
 
-    if (string.IsNullOrWhiteSpace(value.Title))
-    {
-      return BadRequest(new { message = "El título es obligatorio." });
-    }
-
-    if (string.IsNullOrWhiteSpace(value.Status) || (value.Status != "Pendiente" && value.Status != "Completada"))
-    {
-      return BadRequest(new { message = "El estado debe ser 'Pendiente' o 'Completada'." });
-    }
-
-    var newTask = new TaskDto
-    {
-      Title = value.Title,
-      Description = value.Description,
-      Status = value.Status,
-    };
+            var newTask = new TaskDto
+            {
+                Id = nextId++,
+                Title = value.Title,
+                Description = value.Description,
+                Status = value.Status
+            };
 
     Tasks.Add(newTask);
     return CreatedAtAction(nameof(GetById), new { id = newTask.Id }, newTask);
