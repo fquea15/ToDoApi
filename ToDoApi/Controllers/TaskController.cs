@@ -46,12 +46,20 @@ namespace ToDoApi.Controllers
             return CreatedAtAction(nameof(GetById), new { id = newTask.Id }, newTask);
         }
 
-  // PUT /tasks/{id} → Modifica una tarea existente.
-  [HttpPut("{id}")]
-  public IActionResult Update([FromRoute] string id, [FromBody] string value)
-  {
-    return Ok(new { message = "updated" });
-  }
+        // PUT /tasks/{id} → Modifica una tarea existente. (TU PARTE)
+        [HttpPut("{id}")]
+        public IActionResult Update([FromRoute] int id, [FromBody] UpdateTaskDto updatedTask)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var existingTask = Tasks.FirstOrDefault(t => t.Id == id);
+            if (existingTask == null)
+            {
+                return NotFound();
+            }
 
   // DELETE /tasks/{id} → Elimina una tarea.
   [HttpDelete("{id}")]
