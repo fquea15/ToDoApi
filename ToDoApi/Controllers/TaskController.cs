@@ -42,9 +42,9 @@ namespace ToDoApi.Controllers
                 Status = value.Status
             };
 
-    Tasks.Add(newTask);
-    return CreatedAtAction(nameof(GetById), new { id = newTask.Id }, newTask);
-  }
+            Tasks.Add(newTask);
+            return CreatedAtAction(nameof(GetById), new { id = newTask.Id }, newTask);
+        }
 
   // PUT /tasks/{id} → Modifica una tarea existente.
   [HttpPut("{id}")]
