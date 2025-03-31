@@ -1,24 +1,33 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
 namespace ToDoApi.Models;
-
 public abstract class BaseTaskDto
 {
-  [Required(ErrorMessage = "El título es obligatorio")]
-  public string Title { get; set; } = string.Empty;
+    [Required(ErrorMessage = "El título es obligatorio")]
+    [MinLength(3, ErrorMessage = "El título debe tener al menos 3 caracteres")]
+    [MaxLength(100, ErrorMessage = "El título no puede superar los 100 caracteres")]
+    public string Title { get; set; } = string.Empty;
 
-  public string Description { get; set; } = string.Empty;
+    [MaxLength(500, ErrorMessage = "La descripción no puede superar los 500 caracteres")]
+    public string Description { get; set; } = string.Empty;
 }
 
 public class TaskDto : BaseTaskDto
 {
-  public string Id { get; set; } = Guid.NewGuid().ToString();
-  
-  [Required(ErrorMessage = "El estado es obligatorio")]
-  [RegularExpression("^(Completada|Pendiente)$", ErrorMessage = "Estado inválido")]
-  public string Status { get; set; } = "Pendiente";
+r único de la tarea.
+
+    public Guid Id { get; set; } = Guid.NewGuid();
+
+    [Required(ErrorMessage = "El estado es obligatorio")]
+    public TaskStatus Status { get; set; } = TaskStatus.Pendiente;
 }
 
 public class CreateTaskDto : BaseTaskDto
 {
+}
+
+public enum TaskStatus
+{
+    Pendiente,
+    Completada
 }
